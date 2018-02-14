@@ -1,7 +1,15 @@
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/RGF)](http://cran.r-project.org/package=RGF)
+[![Travis-CI Build Status](https://travis-ci.org/mlampros/RGF.svg?branch=master)](https://travis-ci.org/mlampros/RGF)
+[![codecov.io](https://codecov.io/github/mlampros/RGF/coverage.svg?branch=master)](https://codecov.io/github/mlampros/RGF?branch=master)
+[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/RGF?color=blue)](http://www.r-pkg.org/pkg/RGF)
+
+
+
 
 ## RGF (Regularized Greedy Forest)
 <br>
+
 
 The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/fukatani/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/baidu/fast_rgf). More details on the functionality of the RGF package can be found in the package Documentation and Vignette.
 
@@ -550,4 +558,3 @@ install.packages('RGF')
 
 ```
 <br>
-

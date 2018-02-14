@@ -1,0 +1,74 @@
+
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: r
+compiler: gcc
+pandoc_version: 1.18
+
+sudo: required
+cache: packages
+
+addons:
+  apt:
+    packages:
+      - python2.7
+
+env:
+  global:
+    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+    - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+    
+before_install:
+
+  - sudo apt-get install r-base-dev
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq g++-6
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+  - sudo apt-get update -qq
+  #- sudo apt-get install cmake
+  - wget https://cmake.org/files/v3.8/cmake-3.8.0-rc4.tar.gz                      # install cmake
+  - tar xzf cmake-3.8.0-rc4.tar.gz
+  - cd cmake-3.8.0-rc4/
+  - ./bootstrap
+  - make -j4
+  - sudo make install
+  - cd
+  - sudo pip install --upgrade pip setuptools
+  - sudo pip install -U numpy
+  - sudo pip install --upgrade scipy
+  - sudo pip install -U scikit-learn
+  - git clone --recursive https://github.com/fukatani/rgf_python.git
+  - cd rgf_python
+  - sudo python setup.py install
+  - cd
+  - sudo apt-get update
+  
+#install:
+#  - Rscript -e 'install.packages(c("devtools", "roxygen2", "testthat", "covr", "knitr", "rmarkdown", "reticulate", "R6", "Matrix"))'  # ; devtools::install_deps("RGF")'
+  
+#script:
+  #- Rscript -e 'devtools::check("RGF")'
+
+r_packages:
+
+  - devtools
+  - roxygen2
+  - reticulate
+  - R6
+  - Matrix
+  - testthat
+  - covr
+  - knitr
+  - rmarkdown
+  
+after_success:
+  - Rscript -e 'covr::codecov(quiet = FALSE)'
+  
+warnings_are_errors: false
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
