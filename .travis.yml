@@ -26,8 +26,7 @@ before_install:
   - sudo apt-get install -qq g++-6
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
   - sudo apt-get update -qq
-  #- sudo apt-get install cmake
-  - wget https://cmake.org/files/v3.8/cmake-3.8.0-rc4.tar.gz                      # install cmake
+  - wget https://cmake.org/files/v3.8/cmake-3.8.0-rc4.tar.gz                      # install recent 'cmake' version
   - tar xzf cmake-3.8.0-rc4.tar.gz
   - cd cmake-3.8.0-rc4/
   - ./bootstrap
@@ -43,27 +42,25 @@ before_install:
   - sudo python setup.py install
   - cd
   - sudo apt-get update
+ 
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# workaround : no idea why the same .travis.yml file as in fuzzywuzzyR package doesn't work ( it gives "No DESCRIPTION file found, user must supply their own install and script steps" ) 
   
-#install:
-#  - Rscript -e 'install.packages(c("devtools", "roxygen2", "testthat", "covr", "knitr", "rmarkdown", "reticulate", "R6", "Matrix"))'  # ; devtools::install_deps("RGF")'
+install:
+
+  - Rscript -e 'install.packages(c("devtools", "roxygen2", "testthat", "covr", "knitr", "rmarkdown", "reticulate", "R6", "Matrix"))'
   
-#script:
-  #- Rscript -e 'devtools::check("RGF")'
+script:
 
-r_packages:
-
-  - devtools
-  - roxygen2
-  - reticulate
-  - R6
-  - Matrix
-  - testthat
-  - covr
-  - knitr
-  - rmarkdown
+  - cd /home/travis/build/mlampros/
+  - Rscript -e 'system("R CMD build RGF")'
+  - Rscript -e 'system("R CMD check RGF_1.0.0.tar.gz")'
+  - cd
+  
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
 after_success:
-  - Rscript -e 'covr::codecov(quiet = FALSE)'
+  - Rscript -e 'covr::codecov(path = "/home/travis/build/mlampros/RGF", quiet = FALSE)'
   
 warnings_are_errors: false
 
