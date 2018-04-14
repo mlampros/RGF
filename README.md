@@ -5,8 +5,6 @@
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/RGF?color=blue)](http://www.r-pkg.org/pkg/RGF)
 
 
-
-
 ## RGF (Regularized Greedy Forest)
 <br>
 

@@ -12,7 +12,7 @@
 #                                  min_samples_leaf = 10, n_iter = NULL,
 #                                  n_tree_search = 1, opt_interval = 100,
 #                                  learning_rate = 0.5, calc_prob = "sigmoid",
-#                                  n_jobs = 1memory_policy = "generous",
+#                                  n_jobs = 1, memory_policy = "generous",
 #                                  verbose = 0)
 }
 \arguments{

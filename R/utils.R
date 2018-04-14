@@ -82,23 +82,27 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 #' @examples
 #'
 #' if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
-#'
-#'   library(RGF)
-#'
-#'   data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
-#'
-#'   dgcM = Matrix::Matrix(data = data, nrow = 3,
-#'
-#'                         ncol = 3, byrow = TRUE,
-#'
-#'                         sparse = TRUE)
-#'
-#'   print(dim(dgcM))
-#'
-#'   res = dgCMatrix_2scipy_sparse(dgcM)
-#'
-#'   print(res$shape)
+#'   
+#'   if (Sys.info()["sysname"] != 'Darwin') {
+#'     
+#'     library(RGF)
+#' 
+#'     data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
+#'   
+#'     dgcM = Matrix::Matrix(data = data, nrow = 3,
+#'   
+#'                           ncol = 3, byrow = TRUE,
+#'   
+#'                           sparse = TRUE)
+#'   
+#'     print(dim(dgcM))
+#'   
+#'     res = dgCMatrix_2scipy_sparse(dgcM)
+#'   
+#'     print(res$shape)
+#'   }
 #' }
+
 
 dgCMatrix_2scipy_sparse = function(dgc_mat_object) {
 
@@ -383,7 +387,7 @@ RGF_Regressor <- R6::R6Class("RGF_Regressor",
 #' #                                  min_samples_leaf = 10, n_iter = NULL,
 #' #                                  n_tree_search = 1, opt_interval = 100,
 #' #                                  learning_rate = 0.5, calc_prob = "sigmoid",
-#' #                                  n_jobs = 1memory_policy = "generous",
+#' #                                  n_jobs = 1, memory_policy = "generous",
 #' #                                  verbose = 0)
 #' @examples
 #'
