@@ -273,7 +273,7 @@ testthat::test_that("the 'mat_2scipy_sparse' returns a scipy sparse matrix", {
 
 
 # run the following tests on all operating systems except for 'Macintosh'   
-# [ otherwise it will raise an error due to the fact that the 'scipy-sparse' library ( applied on 'dgCMatrix_2scipy_sparse' function) 
+# [ otherwise it will raise an error due to the fact that the 'scipy-sparse' library ( applied on 'TO_scipy_sparse' function) 
 #   on CRAN is not upgraded and the older version includes a bug ('TypeError : could not interpret data type') ]
 # reference : https://github.com/scipy/scipy/issues/5353
 
@@ -282,17 +282,17 @@ if (Sys.info()["sysname"] != 'Darwin') {
   # conversion of an R 'dgCMatrix' to a scipy sparse matrix
   #--------------------------------------------------------
   
-  testthat::test_that("the 'dgCMatrix_2scipy_sparse' returns an error in case that the input object is not of type 'dgCMatrix'", {
+  testthat::test_that("the 'TO_scipy_sparse' returns an error in case that the input object is not of type 'dgCMatrix' or 'dgRMatrix'", {
   
     skip_test_if_no_module("scipy")
   
     mt = matrix(runif(20), nrow = 5, ncol = 4)
   
-    testthat::expect_error( dgCMatrix_2scipy_sparse(mt) )
+    testthat::expect_error( TO_scipy_sparse(mt) )
   })
   
   
-  testthat::test_that("the 'dgCMatrix_2scipy_sparse' returns the correct output", {
+  testthat::test_that("the 'TO_scipy_sparse' returns the correct output", {
   
     skip_test_if_no_module("scipy")
   
@@ -304,7 +304,7 @@ if (Sys.info()["sysname"] != 'Darwin') {
   
                           sparse = TRUE)
   
-    res = dgCMatrix_2scipy_sparse(dgcM)
+    res = TO_scipy_sparse(dgcM)
   
     cl_obj = class(res)[1]                                                             # class is python object
   
@@ -330,7 +330,7 @@ if (Sys.info()["sysname"] != 'Darwin') {
   
                           byrow = TRUE, sparse = TRUE)
   
-    scipySprse = dgCMatrix_2scipy_sparse(dgcM)                                            # use scipy sparse matrix
+    scipySprse = TO_scipy_sparse(dgcM)                                            # use scipy sparse matrix
   
     init_regr = RGF_Regressor$new(max_leaf = 50, sl2 = 0.1, n_iter = 10)
   

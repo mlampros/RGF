@@ -1,7 +1,7 @@
 
 export(RGF_cleanup_temp_files)
 export(mat_2scipy_sparse)
-export(dgCMatrix_2scipy_sparse)
+export(TO_scipy_sparse)
 export(RGF_Regressor)
 export(RGF_Classifier)
 export(FastRGF_Regressor)

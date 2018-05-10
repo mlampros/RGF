@@ -15,7 +15,7 @@
 #                                  verbose = 0)
 }
 \arguments{
-\item{x}{an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{dgCMatrix_2scipy_sparse} allow the user to convert an R matrix / R dgCMatrix to a scipy sparse matrix.}
+\item{x}{an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{TO_scipy_sparse} allow the user to convert an R dense or sparse matrix to a scipy sparse matrix.}
 
 \item{y}{a vector of shape c(n_samples). The target values (real numbers in regression).}
 

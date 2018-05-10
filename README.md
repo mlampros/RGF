@@ -9,7 +9,7 @@
 <br>
 
 
-The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/fukatani/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/baidu/fast_rgf). More details on the functionality of the RGF package can be found in the package Documentation and Vignette.
+The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/fukatani/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/baidu/fast_rgf). More details on the functionality of the RGF package can be found in the [blog-post](http://mlampros.github.io/2018/02/14/the_RGF_package/) and in the package Documentation.
 
 
 <br>

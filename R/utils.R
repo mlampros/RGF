@@ -49,6 +49,8 @@ RGF_cleanup_temp_files = function() {
 #' }
 
 mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
+  
+  if (!inherits(x, "matrix")) stop("the 'x' parameter should be of type 'matrix'", call. = F)
 
   if (format == 'sparse_column_matrix') {
 
@@ -66,27 +68,31 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 
 
 
-#' conversion of an R dgCMatrix to a scipy sparse matrix
+#' conversion of an R sparse matrix to a scipy sparse matrix
 #'
 #'
-#' @param dgc_mat_object an R sparse matrix of type \emph{dgCMatrix}
+#' @param R_sparse_matrix an R sparse matrix. Acceptable input objects are either a \emph{dgCMatrix} or a \emph{dgRMatrix}.
 #' @details
-#' This function allows the user to convert an R \emph{dgCMatrix} to a scipy sparse matrix (\emph{scipy.sparse.csc_matrix}). This is useful because the Regularized Greedy Forest algorithm accepts besides an R dense matrix also python sparse matrices as input.
+#' This function allows the user to convert either an R \emph{dgCMatrix} or a \emph{dgRMatrix} to a scipy sparse matrix (\emph{scipy.sparse.csc_matrix} or \emph{scipy.sparse.csr_matrix}). This is useful because the \emph{RGF} package accepts besides an R dense matrix also python sparse matrices as input.
 #'
-#' The dgCMatrix class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. In this implementation the non-zero elements in the columns are sorted into increasing row order. dgCMatrix is the “standard” class for sparse numeric matrices in the \emph{Matrix} package.
+#' The \emph{dgCMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. The \emph{dgRMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. 
 #'
 #' @export
 #' @import reticulate
 #' @importFrom Matrix Matrix
-#' @references https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgCMatrix-class.html, https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html#scipy.sparse.csc_matrix
+#' @references https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgCMatrix-class.html, https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgRMatrix-class.html, https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html#scipy.sparse.csc_matrix
 #' @examples
-#'
+#' 
 #' if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
 #'   
 #'   if (Sys.info()["sysname"] != 'Darwin') {
-#'     
-#'     library(RGF)
 #' 
+#'     library(RGF)
+#'   
+#'   
+#'     # 'dgCMatrix' sparse matrix
+#'     #--------------------------
+#'   
 #'     data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
 #'   
 #'     dgcM = Matrix::Matrix(data = data, nrow = 3,
@@ -97,19 +103,41 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 #'   
 #'     print(dim(dgcM))
 #'   
-#'     res = dgCMatrix_2scipy_sparse(dgcM)
+#'     res = TO_scipy_sparse(dgcM)
 #'   
 #'     print(res$shape)
+#'     
+#'     
+#'     # 'dgRMatrix' sparse matrix
+#'     #--------------------------
+#'     
+#'     dgrM = as(dgcM, "RsparseMatrix")
+#'     
+#'     print(dim(dgrM))
+#'   
+#'     res_dgr = TO_scipy_sparse(dgrM)
+#'   
+#'     print(res_dgr$shape)
 #'   }
 #' }
 
-
-dgCMatrix_2scipy_sparse = function(dgc_mat_object) {
-
-  if (!inherits(dgc_mat_object, "dgCMatrix")) { stop("the 'dgc_mat_object' parameter should be of type 'dgCMatrix' sparse matrix", call. = F) }
-
-  py_obj = SCP$sparse$csc_matrix(reticulate::tuple(dgc_mat_object@x, dgc_mat_object@i, dgc_mat_object@p), shape = reticulate::tuple(dgc_mat_object@Dim[1], dgc_mat_object@Dim[2]))
-
+TO_scipy_sparse = function(R_sparse_matrix) {
+  
+  if (inherits(R_sparse_matrix, "dgCMatrix")) {
+    
+    py_obj = SCP$sparse$csc_matrix(reticulate::tuple(R_sparse_matrix@x, R_sparse_matrix@i, R_sparse_matrix@p), shape = reticulate::tuple(R_sparse_matrix@Dim[1], R_sparse_matrix@Dim[2]))
+  }
+  
+  else if (inherits(R_sparse_matrix, "dgRMatrix")) {
+    
+    py_obj = SCP$sparse$csr_matrix(reticulate::tuple(R_sparse_matrix@x, R_sparse_matrix@j, R_sparse_matrix@p), shape = reticulate::tuple(R_sparse_matrix@Dim[1], R_sparse_matrix@Dim[2]))
+  }
+  
+  else {
+    
+    stop("the 'R_sparse_matrix' parameter should be either a 'dgCMatrix' or a 'dgRMatrix' sparse matrix", call. = F) 
+  }
+  
   return(py_obj)
 }
 
@@ -118,7 +146,7 @@ dgCMatrix_2scipy_sparse = function(dgc_mat_object) {
 #' Regularized Greedy Forest regressor
 #'
 #'
-#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{dgCMatrix_2scipy_sparse} allow the user to convert an R matrix / R dgCMatrix to a scipy sparse matrix.
+#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{TO_scipy_sparse} allow the user to convert an R dense or sparse matrix to a scipy sparse matrix.
 #' @param y a vector of shape c(n_samples). The target values (real numbers in regression).
 #' @param sample_weight a vector of shape c(n_samples) or NULL. Individual weights for each sample.
 #' @param max_leaf an integer. Training will be terminated when the number of leaf nodes in the forest reaches this value.
@@ -305,7 +333,7 @@ RGF_Regressor <- R6::R6Class("RGF_Regressor",
 #' Regularized Greedy Forest classifier
 #'
 #'
-#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{dgCMatrix_2scipy_sparse} allow the user to convert an R matrix / R dgCMatrix to a scipy sparse matrix.
+#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{TO_scipy_sparse} allow the user to convert an R dense or sparse matrix to a scipy sparse matrix.
 #' @param y a vector of shape c(n_samples). The target values (class labels in classification).
 #' @param sample_weight a vector of shape c(n_samples) or NULL. Individual weights for each sample.
 #' @param max_leaf an integer. Training will be terminated when the number of leaf nodes in the forest reaches this value.
@@ -512,7 +540,7 @@ RGF_Classifier <- R6::R6Class("RGF_Classifier",
 #' A Fast Regularized Greedy Forest regressor
 #'
 #'
-#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{dgCMatrix_2scipy_sparse} allow the user to convert an R matrix / R dgCMatrix to a scipy sparse matrix.
+#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{TO_scipy_sparse} allow the user to convert an R dense or sparse matrix to a scipy sparse matrix.
 #' @param y a vector of shape c(n_samples). The target values (real numbers in regression).
 #' @param n_estimators an integer. The number of trees in the forest (Original name: forest.ntrees.)
 #' @param max_depth an integer. Maximum tree depth (Original name: dtree.max_level.)
@@ -651,7 +679,7 @@ FastRGF_Regressor <- R6::R6Class("FastRGF_Regressor",
 #' A Fast Regularized Greedy Forest classifier
 #'
 #'
-#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{dgCMatrix_2scipy_sparse} allow the user to convert an R matrix / R dgCMatrix to a scipy sparse matrix.
+#' @param x an R matrix (object) or a Python sparse matrix (object) of shape c(n_samples, n_features). The training input samples. The sparse matrix should be a Python sparse matrix. The helper functions \emph{mat_2scipy_sparse} and \emph{TO_scipy_sparse} allow the user to convert an R dense or sparse matrix to a scipy sparse matrix.
 #' @param y a vector of shape c(n_samples). The target values (real numbers in regression).
 #' @param n_estimators an integer. The number of trees in the forest (Original name: forest.ntrees.)
 #' @param max_depth an integer. Maximum tree depth (Original name: dtree.max_level.)
