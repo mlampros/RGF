@@ -1,5 +1,13 @@
 
 
+## RGF 1.0.4
+
+* I modified the license from GPL-3 to MIT to go in accordance with the new structure of the *rgf_python* package
+* I added the following new features of RGF estimators : *feature_importances_* and *dump_model()*
+* I modified the README.md file and especially the installation instructions for all operating systems (Linux, Macintosh, Windows)
+* I created an R6 class (*Internal_class*) for all secondary functions which are used in RGF and FastRGF
+
+
 ## RGF 1.0.3
 
 * The *dgCMatrix_2scipy_sparse* function was renamed to *TO_scipy_sparse* and now accepts either a *dgCMatrix* or a *dgRMatrix* as input. The appropriate format for the RGF package in case of sparse matrices is the *dgCMatrix* format (*scipy.sparse.csc_matrix*)

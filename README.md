@@ -9,7 +9,7 @@
 <br>
 
 
-The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/fukatani/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/baidu/fast_rgf). More details on the functionality of the RGF package can be found in the [blog-post](http://mlampros.github.io/2018/02/14/the_RGF_package/) and in the package Documentation.
+The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/RGF-team/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/baidu/fast_rgf). More details on the functionality of the RGF package can be found in the [blog-post](http://mlampros.github.io/2018/02/14/the_RGF_package/) and in the package Documentation.
 
 
 <br>
@@ -18,9 +18,11 @@ The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https:
 
 [Rie Johnson and Tong Zhang, Learning Nonlinear Functions Using Regularized Greedy Forest](https://arxiv.org/abs/1109.0887)
 
-https://github.com/fukatani/rgf_python
+https://github.com/RGF-team/rgf/tree/master/RGF
 
-https://github.com/baidu/fast_rgf
+https://github.com/RGF-team/rgf/tree/master/FastRGF
+
+https://github.com/RGF-team/rgf/tree/master/python-package
 
 
 <br>
@@ -29,7 +31,7 @@ https://github.com/baidu/fast_rgf
 
 <br>
 
-* Python (>= 2.7)
+* Python (2.7 or >= 3.4)
 
 
 <br>
@@ -38,11 +40,7 @@ All modules should be installed in the default python configuration (the configu
 
 <br>
 
-The installation notes for *Linux, Macintosh, Windows* are based on *Python 2.7*.
-
-<br>
-
-#### **Debian/Ubuntu/Fedora** 
+#### **Debian/Ubuntu/Fedora**    [ Python 2.7 ]
 
 <br>
 
@@ -62,29 +60,21 @@ sudo pip install -U scikit-learn
 
 <br>
 
-Then, download both *rgf* and *fast_rgf* by opening a console and giving,
+Then, download the *rgf-python* package and install it using the following commands,
 
 <br>
 
 
 ```R
 
-git clone --recursive https://github.com/fukatani/rgf_python.git
+git clone https://github.com/RGF-team/rgf.git
 
+cd rgf/python-package
+
+sudo python setup.py install
 
 ```
 
-<br>
-
-By using the *recursive* parameter the *fast_rgf* folder will be included in the downoladed data. Then install both *rgf* and *fast_rgf* using the following command:
-
-<br>
-
-```R
-cd rgf_python
-
-sudo python setup.py install 
-```
 <br>
 
 *FastRGF* will be installed successfully only if gcc >= 5.0.
@@ -93,29 +83,17 @@ sudo python setup.py install
 
 
 
-#### **Macintosh OSX** 
-<br>
-
-
-First do a fresh install of python using brew  [ normally the brew-python will appear as python2, because python comes by default in Macintosh OS ]
+#### **Macintosh OSX**            [ Python >= 3.4 ]
 
 <br>
+
+Upgrade python to version 3 using, 
+
 
 ```R
-brew install python
 
-brew link --overwrite python
-```
-<br>
+brew upgrade python
 
-Then update the *.bash_profile* file in home directory with the following paths
-
-<br>
-
-```R
-export PATH=/usr/local/bin:/usr/bin:$PATH
-
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 ```
 <br>
 
@@ -124,113 +102,98 @@ Then install the dependencies for *RGF* and *FastRGF*
 <br>
 
 ```R
-sudo pip2 install --upgrade pip setuptools
+sudo pip3 install --upgrade setuptools
 
-sudo pip2 install -U numpy
+sudo pip3 install -U numpy
 
-sudo pip2 install --upgrade scipy
+sudo pip3 install --upgrade scipy
 
-sudo pip2 install -U scikit-learn
+sudo pip3 install -U scikit-learn
 ```
 <br>
 
 
-In case that an error appears for any of the previous installation commands, run one (or all) of the following (depending on which module wasn't correctly installed),
+The *FastRGF* module requires a gcc >= 8.0. To install *gcc-8* (or the most recent gcc) with brew follow the next steps,
 
 <br>
 
 ```R
-sudo pip2 install --upgrade --ignore-installed --install-option '--install-data=/usr/local' numpy
 
-sudo pip2 install --upgrade --ignore-installed --install-option '--install-data=/usr/local' scipy
+# before running the following commands make sure that the most recent Apple command line tools for Xcode are installed
 
-sudo pip2 install --upgrade --ignore-installed --install-option '--install-data=/usr/local' scikit-learn
-```
+brew update
 
-<br>
+brew upgrade
 
-The *FastRGF* module requires a gcc >= 5.0. To install *gcc-7* with brew do,
+brew info gcc
 
-<br>
-
-```R
 brew install gcc
 
-brew link --overwrite gcc
+brew cleanup
 
-export CXX=g++-7 && export CC=gcc-7
 ```
-
 <br>
 
-then create a symbolic link
-
-<br>
-
-```R
-cd /usr/local/bin
-
-ln -s gcc-7 gcc
-```
-
-<br>
-
-Then continue with the installation of *fast_rgf* and *rgf* python,
+After the newest gcc version is installed the user should navigate to */usr/local/bin* and if a *gcc* file exists (symbolic link) then the user should delete it. Then the user should
+run the following command,
 
 <br>
 
 ```R
 
-git clone --recursive https://github.com/fukatani/rgf_python.git
+sudo ln -s /usr/local/bin/gcc-8 /usr/local/bin/gcc
 
+```
 
-cd rgf_python/include/fast_rgf/build
+<br>
 
-export CXX=/usr/local/bin/g++-7 && export CC=/usr/local/bin/gcc-7
+The user should then verify that the gcc has been updated using,
 
-cmake rgf_python/include/fast_rgf
+<br>
+
+```R
+
+gcc -v
+
+which gcc
+
+```
+
+<br>
+
+After the new gcc is installed the user should continue with the installation of *rgf-python*,
+
+<br>
+
+```R
+
+git clone https://github.com/RGF-team/rgf.git
+
+cd /rgf/RGF/build
+
+export CXX=/usr/local/bin/g++-8 && export CC=/usr/local/bin/gcc-8
+
+cmake /rgf/RGF /rgf/FastRGF
 
 make
 
 sudo make install
 
+cd /rgf/python-package
 
-cd
+sudo python3 setup.py install
 
-cd rgf_python/include/rgf/build
-
-export CXX=/usr/local/bin/g++-7 && export CC=/usr/local/bin/gcc-7
-
-cmake rgf_python/include/rgf
-
-make
-
-sudo make install
 ```
-
-<br>
-
-Then install both *rgf* and *fast-rgf* using the following command,
-
-<br>
-
-```R
-cd 
-
-cd rgf_python
-
-sudo python2 setup.py install                 
-```
-
 <br>
 
 After a successful rgf-python installation the user should open an R session and give the following *reticulate* command to change to the relevant (brew-python) directory (otherwise the RGF package won't work properly),
 
 <br>
 
+
 ```R
 
-reticulate::use_python('/usr/local/bin/python2')
+reticulate::use_python('/usr/local/bin/python3')
 
 
 ```
@@ -267,7 +230,6 @@ library(RGF)
 
 <br>
 
-
 to load the R package. It is possible that the following warning in the R session appears if *FastRGF* is not installed,
 
 <br>
@@ -281,7 +243,11 @@ UserWarning: Cannot find FastRGF executable files. FastRGF estimators will be un
 
 <br><br>
 
-#### **Windows OS**
+#### **Windows OS**            [ Python >= 3.4 ]
+
+<br>
+
+**NOTE : CURRENTLY THE PACKAGE ON WINDOWS CAN BE USED ONLY FROM THE COMMAND LINE (cmd)**
 
 <br>
 
@@ -289,20 +255,20 @@ First download of [get-pip.py](https://bootstrap.pypa.io/get-pip.py) for windows
 
 <br>
 
-Update the Environment variables ( Control Panel >> System and Security >> System >> Advanced system settings >> Environment variables >> System variables >> Path >> Edit ) by adding ( for instance in case of python 2.7 ),
+Update the Environment variables ( Control Panel >> System and Security >> System >> Advanced system settings >> Environment variables >> System variables >> Path >> Edit ) by adding ( for instance in case of python 3 ),
 
 <br>
 
 ```R
 
-C:\Python27;C:\Python27\Scripts
+C:\Python36;C:\Python36\Scripts
 
 
 ```
 
 <br>
 
-Install the [Visual C++ 2015 Build Tools](http://landinghub.visualstudio.com/visual-cpp-build-tools)
+Install the [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2017)
 
 <br>
 
@@ -312,14 +278,13 @@ Open the Command prompt (console) and install the *rgf_python* dependencies,
 
 ```R
 
-pip install --upgrade pip setuptools
+pip3 install --upgrade setuptools
 
-pip install -U numpy
+pip3 install -U numpy
 
-pip install --upgrade scipy
+pip3 install --upgrade scipy
 
-pip install -U scikit-learn
-
+pip3 install -U scikit-learn
 
 ```
 
@@ -343,8 +308,7 @@ and run the downloaded  *.exe* file. Then do,
 
 ```R
 
-git clone --recursive https://github.com/fukatani/rgf_python.git
-
+git clone https://github.com/RGF-team/rgf.git
 
 ```
 
@@ -426,33 +390,56 @@ Before the installation of *rgf* I might have to remove *Rtools* environment var
 
 <br>
 
-Open a console with **administrator privileges** (right click on cmd and *run as administrator*), then do
-
+Open a console with **administrator privileges** (right click on cmd and *run as administrator*), then 
 <br>
+
 
 ```R
 
-cd rgf_python/include/rgf/build
 
-cmake ../ -G "MinGW Makefiles"
+# download the most recent version of rgf-python from the github repository
+#--------------------------------------------------------------------------
+
+git clone http://github.com/RGF-team/rgf.git
+
+
+
+# then navigate to 
+#-----------------
+
+cd /rgf/RGF/
+
+mkdir bin
+
+
+
+# then download the latest "rgf.exe"" from https://github.com/RGF-team/rgf/releases and place the "rgf.exe"" inside the previously created "bin"" folder ( /rgf/RGF/bin )
+
+
+
+# installation of RGF
+#--------------------
+
+cd /rgf/RGF/build
 
 mingw32-make
 
-mingw32-make install
+cd c:/
 
-cd C:\
 
-```
 
-<br>
+# installation of FastRGF
+#------------------------
 
-**installation of fast_rgf**
+cd /rgf/FastRGF/
 
-<br>
+mkdir build
 
-```R
+cd build
 
-cd rgf_python/include/fast_rgf/build
+
+# BEFORE PROCEEDING WITH cmake MAKE SURE THAT THE "Rtools" folder IS NOT IN THE SAME DIRECTORY (IF THAT IS THE CASE THEN REMOVE IT TEMPROARILY, i.e. copy-paste the "Rtools" folder somewhere else)
+
 
 cmake .. -G "MinGW Makefiles"
 
@@ -460,19 +447,16 @@ mingw32-make
 
 mingw32-make install
 
-cd C:\
+cd c:/
 
-```
 
-<br>
+# IF APPLICABLE, PASTE THE "Rtools" FOLDER IN THE INITIAL LOCATION / DIRECTORY
 
-Installation (of both) in python
 
-<br>
+# installation of rgf-python
+#---------------------------
 
-```R
-
-cd rgf_python
+cd rgf/python-package
 
 python setup.py install
 
@@ -502,6 +486,7 @@ to launch *Python* and then type
 
 import rgf
 
+exit()
 
 ```
 

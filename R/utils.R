@@ -143,6 +143,107 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 
 
 
+
+#' Internal R6 class for all secondary functions used in RGF and FastRGF
+#'
+#' @importFrom R6 R6Class
+#' @keywords internal 
+
+Internal_class <- R6::R6Class("Internal_class",
+                              
+                              lock_objects = FALSE,
+                              
+                              public = list(
+                                
+                              
+                              # 'fit' function
+                              #----------------
+                              
+                              fit = function(x, y, sample_weight = NULL) {
+                                
+                                private$rgf_init$fit(x, y, sample_weight)
+                                
+                                invisible()
+                              },
+                              
+                              
+                              # 'predict' function
+                              #--------------------
+                              
+                              predict = function(x) {
+                                
+                                return(private$rgf_init$predict(x))
+                              },
+                              
+                              
+                              # 'predict' function   [ probabilities ]
+                              #--------------------
+                              
+                              predict_proba = function(x) {
+                                
+                                return(private$rgf_init$predict_proba(x))
+                              },
+                              
+                              
+                              # 'cleanup' function
+                              #-------------------
+                              
+                              cleanup = function() {
+                                
+                                private$rgf_init$cleanup()
+                                
+                                invisible()
+                              },
+                              
+                              
+                              # 'get_params' function
+                              #----------------------
+                              
+                              get_params = function(deep = TRUE) {
+                                
+                                return(private$rgf_init$get_params(deep))
+                              },
+                              
+                              
+                              # score function
+                              #---------------
+                              
+                              score = function(x, y, sample_weight = NULL) {
+                                
+                                return(private$rgf_init$score(x, y, sample_weight))
+                              },
+                              
+                              
+                              # feature importance
+                              #-------------------
+                              
+                              feature_importances = function() {
+                                
+                                return(private$rgf_init$feature_importances_)
+                              },
+                              
+                              
+                              # dump-model
+                              #-----------
+                              
+                              dump_model = function() {
+                                
+                                return(private$rgf_init$dump_model)
+                              }
+                             ),
+                             
+                             private = list(
+                               
+                               rgf_init = NULL
+                             )
+)
+
+
+
+
+
+
+
 #' Regularized Greedy Forest regressor
 #'
 #'
@@ -176,6 +277,10 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #' the \emph{get_params} function returns the parameters of the model.
 #'
 #' the \emph{score} function returns the coefficient of determination ( R^2 ) for the predictions.
+#' 
+#' the \emph{feature_importances} function returns the feature importances for the data.
+#' 
+#' the \emph{dump_model} function currently prints information about the fitted model in the console
 #'
 #' @references \emph{https://github.com/fukatani/rgf_python}, \emph{Rie Johnson and Tong Zhang, Learning Nonlinear Functions Using Regularized Greedy Forest}
 #' @docType class
@@ -211,6 +316,16 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #'  \item{\code{--------------}}{}
 #'
 #'  \item{\code{score(x, y, sample_weight = NULL)}}{}
+#'  
+#'  \item{\code{--------------}}{}
+#'  
+#'  \item{\code{feature_importances()}}{}
+#'
+#'  \item{\code{--------------}}{}
+#'  
+#'  \item{\code{dump_model()}}{}
+#'
+#'  \item{\code{--------------}}{}
 #'  }
 #'
 #' @usage # init <- RGF_Regressor$new(max_leaf = 500, test_interval = 100,
@@ -239,6 +354,8 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #' }
 
 RGF_Regressor <- R6::R6Class("RGF_Regressor",
+                             
+                             inherit = Internal_class,
 
                              lock_objects = FALSE,
 
@@ -252,7 +369,7 @@ RGF_Regressor <- R6::R6Class("RGF_Regressor",
                                  # exceptions for 'min_samples_leaf', 'n_iter'
                                  #--------------------------------------------
 
-                                 if (min_samples_leaf >= 1.0) {                             # must be either > as.integer(1.0) or in (0, 0.5]
+                                 if (min_samples_leaf >= 1.0) {                              # must be either > as.integer(1.0) or in (0, 0.5]
 
                                    min_samples_leaf = as.integer(min_samples_leaf)
                                  }
@@ -269,61 +386,7 @@ RGF_Regressor <- R6::R6Class("RGF_Regressor",
                                  private$rgf_init = RGF_mod$RGFRegressor(as.integer(max_leaf), as.integer(test_interval), algorithm, loss, reg_depth, l2, sl2, normalize,
                                                                          min_samples_leaf, n_iter, as.integer(n_tree_search), as.integer(opt_interval), learning_rate,
                                                                          memory_policy, as.integer(verbose))
-                               },
-
-
-                               # 'fit' function
-                               #----------------
-
-                               fit = function(x, y, sample_weight = NULL) {
-
-                                 private$rgf_init$fit(x, y, sample_weight)
-
-                                 invisible()
-                               },
-
-
-                               # 'predict' function
-                               #--------------------
-
-                               predict = function(x) {
-
-                                 return(private$rgf_init$predict(x))
-                               },
-
-
-                               # 'cleanup' function
-                               #-------------------
-
-                               cleanup = function() {
-
-                                 private$rgf_init$cleanup()
-
-                                 invisible()
-                               },
-
-
-                               # 'get_params' function
-                               #----------------------
-
-                               get_params = function(deep = TRUE) {
-
-                                 return(private$rgf_init$get_params(deep))
-                               },
-
-
-                               # score function
-                               #---------------
-
-                               score = function(x, y, sample_weight = NULL) {
-
-                                 return(private$rgf_init$score(x, y, sample_weight))
                                }
-                             ),
-
-                             private = list(
-
-                                 rgf_init = NULL
                              )
 )
 
@@ -367,6 +430,10 @@ RGF_Regressor <- R6::R6Class("RGF_Regressor",
 #' the \emph{get_params} function returns the parameters of the model.
 #'
 #' the \emph{score} function returns the mean accuracy on the given test data and labels.
+#' 
+#' the \emph{feature_importances} function returns the feature importances for the data.
+#' 
+#' the \emph{dump_model} function currently prints information about the fitted model in the console
 #'
 #' @references \emph{https://github.com/fukatani/rgf_python}, \emph{Rie Johnson and Tong Zhang, Learning Nonlinear Functions Using Regularized Greedy Forest}
 #' @docType class
@@ -407,6 +474,16 @@ RGF_Regressor <- R6::R6Class("RGF_Regressor",
 #'  \item{\code{--------------}}{}
 #'
 #'  \item{\code{score(x, y, sample_weight = NULL)}}{}
+#'  
+#'  \item{\code{--------------}}{}
+#'  
+#'  \item{\code{feature_importances()}}{}
+#'
+#'  \item{\code{--------------}}{}
+#'  
+#'  \item{\code{dump_model()}}{}
+#'
+#'  \item{\code{--------------}}{}
 #'  }
 #'
 #' @usage # init <- RGF_Classifier$new(max_leaf = 1000, test_interval = 100,
@@ -436,102 +513,41 @@ RGF_Regressor <- R6::R6Class("RGF_Regressor",
 #' }
 
 RGF_Classifier <- R6::R6Class("RGF_Classifier",
-
-                             lock_objects = FALSE,
-
-                             public = list(
-
-                               initialize = function(max_leaf = 1000, test_interval = 100, algorithm = "RGF", loss = "Log",
-                                                     reg_depth = 1.0, l2 = 0.1, sl2 = NULL, normalize = FALSE, min_samples_leaf = 10, n_iter = NULL,
-                                                     n_tree_search = 1, opt_interval = 100, learning_rate = 0.5, calc_prob = "sigmoid", n_jobs = 1,
-                                                     memory_policy = "generous", verbose = 0) {
-
-
-                                 # exceptions for 'min_samples_leaf', 'n_iter'
-                                 #--------------------------------------------
-
-                                 if (min_samples_leaf >= 1.0) {                             # must be either > as.integer(1.0) or in (0, 0.5]
-
-                                   min_samples_leaf = as.integer(min_samples_leaf)
-                                 }
-
-                                 if (!is.null(n_iter)) {                                     # must be either NULL or an integer
-
-                                   n_iter = as.integer(n_iter)
-                                 }
-
-
-                                 # initialize RGF_Classifier
-                                 #--------------------------
-
-                                 private$rgf_init = RGF_mod$RGFClassifier(as.integer(max_leaf), as.integer(test_interval), algorithm, loss, reg_depth, l2, sl2, normalize,
-                                                                          min_samples_leaf, n_iter, as.integer(n_tree_search), as.integer(opt_interval), learning_rate,
-                                                                          calc_prob, as.integer(n_jobs), memory_policy, as.integer(verbose))
-                               },
-
-
-                               # 'fit' function
-                               #----------------
-
-                               fit = function(x, y, sample_weight = NULL) {
-
-                                 private$rgf_init$fit(x, y, sample_weight)
-
-                                 invisible()
-                               },
-
-
-                               # 'predict' function   [ labels ]
-                               #--------------------
-
-                               predict = function(x) {
-
-                                 return(private$rgf_init$predict(x))
-                               },
-
-
-                               # 'predict' function   [ probabilities ]
-                               #--------------------
-
-                               predict_proba = function(x) {
-
-                                 return(private$rgf_init$predict_proba(x))
-                               },
-
-
-                               # 'cleanup' function
-                               #-------------------
-
-                               cleanup = function() {
-
-                                 private$rgf_init$cleanup()
-
-                                 invisible()
-                               },
-
-
-                               # 'get_params' function
-                               #----------------------
-
-                               get_params = function(deep = TRUE) {
-
-                                 return(private$rgf_init$get_params(deep))
-                               },
-
-
-                               # score function
-                               #---------------
-
-                               score = function(x, y, sample_weight = NULL) {
-
-                                 return(private$rgf_init$score(x, y, sample_weight))
-                               }
-                             ),
-
-                             private = list(
-
-                               rgf_init = NULL
-                             )
+                              
+                              inherit = Internal_class,
+                              
+                              lock_objects = FALSE,
+                              
+                              public = list(
+                                
+                                initialize = function(max_leaf = 1000, test_interval = 100, algorithm = "RGF", loss = "Log",
+                                                      reg_depth = 1.0, l2 = 0.1, sl2 = NULL, normalize = FALSE, min_samples_leaf = 10, n_iter = NULL,
+                                                      n_tree_search = 1, opt_interval = 100, learning_rate = 0.5, calc_prob = "sigmoid", n_jobs = 1,
+                                                      memory_policy = "generous", verbose = 0) {
+                                  
+                                  
+                                  # exceptions for 'min_samples_leaf', 'n_iter'
+                                  #--------------------------------------------
+                                  
+                                  if (min_samples_leaf >= 1.0) {                              # must be either > as.integer(1.0) or in (0, 0.5]
+                                    
+                                    min_samples_leaf = as.integer(min_samples_leaf)
+                                  }
+                                  
+                                  if (!is.null(n_iter)) {                                     # must be either NULL or an integer
+                                    
+                                    n_iter = as.integer(n_iter)
+                                  }
+                                  
+                                  
+                                  # initialize RGF_Classifier
+                                  #--------------------------
+                                  
+                                  private$rgf_init = RGF_mod$RGFClassifier(as.integer(max_leaf), as.integer(test_interval), algorithm, loss, reg_depth, l2, sl2, normalize,
+                                                                           min_samples_leaf, n_iter, as.integer(n_tree_search), as.integer(opt_interval), learning_rate,
+                                                                           calc_prob, as.integer(n_jobs), memory_policy, as.integer(verbose))
+                                }
+                              )
 )
 
 
@@ -607,6 +623,8 @@ RGF_Classifier <- R6::R6Class("RGF_Classifier",
 #'  \item{\code{--------------}}{}
 #'
 #'  \item{\code{score(x, y, sample_weight = NULL)}}{}
+#'  
+#'  \item{\code{--------------}}{}
 #'  }
 #'
 #' @usage # init <- FastRGF_Regressor$new(n_estimators = 500, max_depth = 6,
@@ -636,11 +654,10 @@ RGF_Classifier <- R6::R6Class("RGF_Classifier",
 #'   preds = fast_RGF_regr$predict(x)
 #' }
 
-
 FastRGF_Regressor <- R6::R6Class("FastRGF_Regressor",
 
-                                 inherit = RGF_Regressor,               # use 'inheritance' as the methods of the 'RGFRegressor' apply also to the 'FastRGFRegressor'   [ SEE also https://stackoverflow.com/questions/37189956/testing-private-methods-in-r6-classes-in-r ]
-
+                                 inherit = Internal_class,
+                                 
                                  lock_objects = FALSE,
 
                                  public = list(
@@ -652,7 +669,7 @@ FastRGF_Regressor <- R6::R6Class("FastRGF_Regressor",
                                      # exceptions for 'min_samples_leaf', 'max_bin'
                                      #---------------------------------------------
 
-                                     if (min_samples_leaf >= 1.0) {                             # must be either > as.integer(1.0) or in (0, 0.5]
+                                     if (min_samples_leaf >= 1.0) {                               # must be either > as.integer(1.0) or in (0, 0.5]
 
                                        min_samples_leaf = as.integer(min_samples_leaf)
                                      }
@@ -755,6 +772,8 @@ FastRGF_Regressor <- R6::R6Class("FastRGF_Regressor",
 #'  \item{\code{--------------}}{}
 #'
 #'  \item{\code{score(x, y, sample_weight = NULL)}}{}
+#'  
+#'  \item{\code{--------------}}{}
 #'  }
 #'
 #' @usage # init <- FastRGF_Classifier$new(n_estimators = 500, max_depth = 6,
@@ -785,11 +804,10 @@ FastRGF_Regressor <- R6::R6Class("FastRGF_Regressor",
 #'   preds = fast_RGF_class$predict_proba(x)
 #' }
 
-
 FastRGF_Classifier <- R6::R6Class("FastRGF_Classifier",
 
-                                  inherit = RGF_Classifier,               # use 'inheritance' as the methods of the 'RGFClassifier' apply also to the 'FastRGFClassifier'
-
+                                  inherit = Internal_class,
+                                  
                                   lock_objects = FALSE,
 
                                   public = list(
@@ -801,7 +819,7 @@ FastRGF_Classifier <- R6::R6Class("FastRGF_Classifier",
                                       # exceptions for 'min_samples_leaf', 'max_bin'
                                       #---------------------------------------------
 
-                                      if (min_samples_leaf >= 1.0) {                             # must be either > as.integer(1.0) or in (0, 0.5]
+                                      if (min_samples_leaf >= 1.0) {                               # must be either > as.integer(1.0) or in (0, 0.5]
 
                                         min_samples_leaf = as.integer(min_samples_leaf)
                                       }

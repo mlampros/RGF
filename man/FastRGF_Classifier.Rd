@@ -112,6 +112,8 @@ the \emph{score} function returns the mean accuracy on the given test data and l
  \item{\code{--------------}}{}
 
  \item{\code{score(x, y, sample_weight = NULL)}}{}
+ 
+ \item{\code{--------------}}{}
  }
 }
 

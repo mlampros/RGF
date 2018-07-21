@@ -19,7 +19,7 @@ The *Regularized Greedy Forest* algorithm is explained in detail in the paper [*
 
 <br>
 
-At the time of writing this Vignette (11 - 02 - 2018), there isn't a corresponding implementation of the algorithm in the R language, so I decided to port the Python package in R taking advantage of the reticulate package. In the next lines, I will explain the functionality of the package and I compare RBF with other similar implementations, such as [*ranger*](https://github.com/imbs-hl/ranger) (random forest algorithm) and [*xgboost*](https://github.com/dmlc/xgboost/tree/master/R-package) (gradient boosting algorithm), in terms of time efficiency and error rate improvement.
+At the time of writing this Vignette (11 - 02 - 2018), there isn't a corresponding implementation of the algorithm in the R language, so I decided to port the Python package in R taking advantage of the reticulate package. In the next lines, I will explain the functionality of the package and I compare RGF with other similar implementations, such as [*ranger*](https://github.com/imbs-hl/ranger) (random forest algorithm) and [*xgboost*](https://github.com/dmlc/xgboost/tree/master/R-package) (gradient boosting algorithm), in terms of time efficiency and error rate improvement.
 
 <br>
 
@@ -37,14 +37,16 @@ The *RGF* package includes the following R6-classes / functions,
 <br>
 
 
-|    RGF_Regressor    |   RGF_Classifier     |  FastRGF_Regressor    |  FastRGF_Classifier  |
-| :-----------------: |  :-----------------: | :------------------:  | :------------------: |
-|   fit()             |  fit(()              | fit()                 | fit()                |
-|   predict()         |  predict()           | predict()             | predict()            |
-|   cleanup()         |  predict_proba()     | cleanup()             | predict_proba()      |
-|   get_params()      |  cleanup()           | get_params()          | cleanup()            |
-|   score()           |  get_params()        | score()               | get_params()         |
-|                     |  score()             |                       | score()              |
+|    RGF_Regressor        |   RGF_Classifier       |  FastRGF_Regressor    |  FastRGF_Classifier  |
+| :-----------------:     |  :-----------------:   | :------------------:  | :------------------: |
+|   fit()                 |  fit(()                | fit()                 | fit()                |
+|   predict()             |  predict()             | predict()             | predict()            |
+|   cleanup()             |  predict_proba()       | cleanup()             | predict_proba()      |
+|   get_params()          |  cleanup()             | get_params()          | cleanup()            |
+|   score()               |  get_params()          | score()               | get_params()         |
+|   feature_importances() |  score()               |                       | score()              |
+|   dump_model()          |  feature_importances() |                       |                      |
+|                         |  dump_model()          |                       |                      |  
 
 
 <br>

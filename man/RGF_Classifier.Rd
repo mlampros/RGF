@@ -71,6 +71,10 @@ the \emph{cleanup} function removes tempfiles used by this model. See the issue 
 the \emph{get_params} function returns the parameters of the model.
 
 the \emph{score} function returns the mean accuracy on the given test data and labels.
+
+the \emph{feature_importances} function returns the feature importances for the data.
+
+the \emph{dump_model} function currently prints information about the fitted model in the console
 }
 \section{Methods}{
 
@@ -108,6 +112,16 @@ the \emph{score} function returns the mean accuracy on the given test data and l
  \item{\code{--------------}}{}
 
  \item{\code{score(x, y, sample_weight = NULL)}}{}
+ 
+ \item{\code{--------------}}{}
+ 
+ \item{\code{feature_importances()}}{}
+
+ \item{\code{--------------}}{}
+ 
+ \item{\code{dump_model()}}{}
+
+ \item{\code{--------------}}{}
  }
 }
 
