@@ -386,7 +386,7 @@ Before the installation of *rgf* I might have to remove *Rtools* environment var
 
 <br>
 
-**installation of rgf**
+**Installation of RGF, FastRGF and rgf_python**   [ *assuming the installation takes place in the **c:/** directory* ]
 
 <br>
 
@@ -397,7 +397,7 @@ Open a console with **administrator privileges** (right click on cmd and *run as
 ```R
 
 
-# download the most recent version of rgf-python from the github repository
+# download the most recent version of rgf-python from the github repository 
 #--------------------------------------------------------------------------
 
 git clone http://github.com/RGF-team/rgf.git
@@ -411,9 +411,10 @@ cd /rgf/RGF/
 
 mkdir bin
 
+cd c:/
 
 
-# then download the latest "rgf.exe"" from https://github.com/RGF-team/rgf/releases and place the "rgf.exe"" inside the previously created "bin"" folder ( /rgf/RGF/bin )
+# then download the latest "rgf.exe" from https://github.com/RGF-team/rgf/releases and place the "rgf.exe" inside the previously created "bin" folder ( /rgf/RGF/bin )
 
 
 

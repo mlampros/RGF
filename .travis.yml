@@ -1,4 +1,5 @@
 
+
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
@@ -26,21 +27,15 @@ before_install:
   - sudo apt-get install -qq g++-6
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
   - sudo apt-get update -qq
-  - wget https://cmake.org/files/v3.8/cmake-3.8.0-rc4.tar.gz                      # install recent 'cmake' version
-  - tar xzf cmake-3.8.0-rc4.tar.gz
-  - cd cmake-3.8.0-rc4/
-  - ./bootstrap
-  - make -j4
-  - sudo make install
-  - cd
+  - sudo apt-get install -y cmake
   - sudo pip install --upgrade pip setuptools
   - sudo pip install -U numpy
   - sudo pip install --upgrade scipy
   - sudo pip install -U scikit-learn
-  - git clone --recursive https://github.com/fukatani/rgf_python.git
-  - cd rgf_python
+  - git clone https://github.com/RGF-team/rgf.git
+  - cd rgf/python-package
   - sudo python setup.py install
-  - cd
+  - cd 
   - sudo apt-get update
  
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +49,7 @@ script:
 
   - cd /home/travis/build/mlampros/
   - Rscript -e 'system("R CMD build RGF")'
-  - Rscript -e 'system("R CMD check RGF_1.0.0.tar.gz")'
+  - Rscript -e 'system("R CMD check RGF_1.0.4.tar.gz")'
   - cd
   
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,4 +63,3 @@ notifications:
   email:
     on_success: change
     on_failure: change
-
