@@ -9,8 +9,11 @@
 <br>
 
 
-The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/RGF-team/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/baidu/fast_rgf). More details on the functionality of the RGF package can be found in the [blog-post](http://mlampros.github.io/2018/02/14/the_RGF_package/) and in the package Documentation.
+The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/RGF-team/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/baidu/fast_rgf). More details on the functionality of the RGF package can be found in the [blog-post](http://mlampros.github.io/2018/02/14/the_RGF_package/) and in the package Documentation. 
 
+<br>
+
+**UPDATE 26-07-2018**: A [Singularity image file](http://mlampros.github.io/2018/07/26/singularity_containers/) is available in case that someone intends to run *RGF* on Ubuntu Linux (locally or in a cloud instance) with all package requirements pre-installed. This allows the user to utilize the *RGF* package without having to spend time on the installation process.
 
 <br>
 
