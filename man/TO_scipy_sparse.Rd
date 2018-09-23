@@ -15,44 +15,46 @@ conversion of an R sparse matrix to a scipy sparse matrix
 \details{
 This function allows the user to convert either an R \emph{dgCMatrix} or a \emph{dgRMatrix} to a scipy sparse matrix (\emph{scipy.sparse.csc_matrix} or \emph{scipy.sparse.csr_matrix}). This is useful because the \emph{RGF} package accepts besides an R dense matrix also python sparse matrices as input.
 
-The \emph{dgCMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. The \emph{dgRMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}.
+The \emph{dgCMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. The \emph{dgRMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{row-oriented format}.
 }
 \examples{
 
 if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
-  
+
   if (Sys.info()["sysname"] != 'Darwin') {
 
     library(RGF)
-  
-  
+
+
     # 'dgCMatrix' sparse matrix
     #--------------------------
-  
+
     data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
-  
-    dgcM = Matrix::Matrix(data = data, nrow = 3,
-  
-                          ncol = 3, byrow = TRUE,
-  
-                          sparse = TRUE)
-  
+
+    dgcM = Matrix::Matrix(
+        data = data
+        , nrow = 3
+        , ncol = 3
+        , byrow = TRUE
+        , sparse = TRUE
+    )
+
     print(dim(dgcM))
-  
+
     res = TO_scipy_sparse(dgcM)
-  
+
     print(res$shape)
-    
-    
+
+
     # 'dgRMatrix' sparse matrix
     #--------------------------
-    
+
     dgrM = as(dgcM, "RsparseMatrix")
-    
+
     print(dim(dgrM))
-  
+
     res_dgr = TO_scipy_sparse(dgrM)
-  
+
     print(res_dgr$shape)
   }
 }

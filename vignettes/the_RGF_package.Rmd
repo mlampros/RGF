@@ -11,7 +11,7 @@ vignette: >
 
 
 
-The RGF package is a wrapper of the [*Regularized Greedy Forest*](https://github.com/fukatani/rgf_python) *python* package, which also includes a [*Multi-core implementation (FastRGF)*](https://github.com/baidu/fast_rgf). Portability from Python to R was made possible using the [reticulate](https://github.com/rstudio/reticulate) package and the installation requires basic knowledge of Python. Except for the Linux Operating System, the installation on Macintosh and Windows might be somehow cumbersome (on windows the package currently can be used only from within the command prompt). Detailed installation instructions for all three Operating Systems can be found in the *README.md* file and in the [*rgf_python*](https://github.com/fukatani/rgf_python) Github repository.
+The RGF package is a wrapper of the [*Regularized Greedy Forest*](https://github.com/RGF-team/rgf/tree/master/python-package) *python* package, which also includes a [*Multi-core implementation (FastRGF)*](https://github.com/RGF-team/rgf/tree/master/FastRGF). Portability from Python to R was made possible using the [reticulate](https://github.com/rstudio/reticulate) package and the installation requires basic knowledge of Python. Except for the Linux Operating System, the installation on Macintosh and Windows might be somehow cumbersome (on windows the package currently can be used only from within the command prompt). Detailed installation instructions for all three Operating Systems can be found in the *README.md* file and in the [*rgf_python*](https://github.com/RGF-team/rgf/tree/master/python-package) GitHub repository.
 
 <br>
 
@@ -38,15 +38,15 @@ The *RGF* package includes the following R6-classes / functions,
 
 
 |    RGF_Regressor        |   RGF_Classifier       |  FastRGF_Regressor    |  FastRGF_Classifier  |
-| :-----------------:     |  :-----------------:   | :------------------:  | :------------------: |
-|   fit()                 |  fit(()                | fit()                 | fit()                |
-|   predict()             |  predict()             | predict()             | predict()            |
-|   cleanup()             |  predict_proba()       | cleanup()             | predict_proba()      |
-|   get_params()          |  cleanup()             | get_params()          | cleanup()            |
-|   score()               |  get_params()          | score()               | get_params()         |
-|   feature_importances() |  score()               |                       | score()              |
-|   dump_model()          |  feature_importances() |                       |                      |
-|                         |  dump_model()          |                       |                      |  
+| :---------------------: |  :-------------------: | :-------------------: | :------------------: |
+|  fit()                  |  fit()                 | fit()                 | fit()                |
+|  predict()              |  predict()             | predict()             | predict()            |
+|                         |  predict_proba()       |                       | predict_proba()      |
+|  cleanup()              |  cleanup()             | cleanup()             | cleanup()            |
+|  get_params()           |  get_params()          | get_params()          | get_params()         |
+|  score()                |  score()               | score()               | score()              |
+|  feature_importances()  |  feature_importances() |                       |                      |
+|  dump_model()           |  dump_model()          |                       |                      |  
 
 
 <br>
@@ -205,8 +205,8 @@ regr_folds = function(folds, RESP, stratified = FALSE) {
 
   if (is.factor(RESP)) {
 
-    stop(simpleError("this function is meant for regression for classification 
-                     use the 'class_folds' function"))
+    stop(simpleError("This function is meant for regression. 
+                     For classification use the 'class_folds' function."))
   }
 
   samp_vec = rep(1/folds, folds)
@@ -405,13 +405,13 @@ total time xgb 5 fold cross-validation :  0.4316094  mean rmse on test data :  3
 
 <br>
 
-For the high-dimensional data (can be downloaded from my [Github repository](https://github.com/mlampros/DataSets)) I'll use the *FastRGF_Regressor* rather than the RGF_Regressor (comparison **without doing hyper-parameter tuning**),
+For the high-dimensional data (can be downloaded from the following [GitHub repository](https://github.com/mlampros/DataSets)) we'll use the *FastRGF_Regressor* rather than the RGF_Regressor (comparison **without doing hyper-parameter tuning**),
 
 <br>
 
 ```{r, eval = F, echo = T}
 
-# download the data from my Github repository (tested on a Linux OS)
+# download the data from the following GitHub repository (tested on a Linux OS)
 
 system("wget 
        https://raw.githubusercontent.com/mlampros/DataSets/master/africa_soil_train_data.zip")
@@ -562,5 +562,4 @@ total time ranger 5 fold cross-validation :  27.32866  mean rmse on test data : 
 total time xgb 5 fold cross-validation :  30.48834  mean rmse on test data :  0.5453544
 
 ```
-
 <br>
