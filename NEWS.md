@@ -1,3 +1,19 @@
+## RGF 1.0.7
+* We've modified the *package.R* file so that messages are printed to the console whenever Python or any of the required modules is not available. Moreover, for the R-package testing the conda environment parameter is adjusted ( this applies to the RGF-team Github repository and not to the CRAN package directly )
+* We've modified the *.appveyor.yml* file to return the *artifacts* in order to observe if tests ran successfully ( this applies to the RGF-team Github repository and not to the CRAN package directly )
+* We've added tests to increase the code coverage.
+* We've dropped support for Python 2.7
+* We've fixed also the invalid URL's in the README.md file
+
+
+## RGF 1.0.6
+
+* We've added the *init_model* parameter to the *RGFRegressor* and *RGFClassifier*
+* We've added the *save_model* method to the *RGFRegressor* and *RGFClassifier*
+* Source files were broken up into one file per exported object as of [#266](https://github.com/RGF-team/rgf/pull/266)
+* Internal calls to estimator constructors were changed to use keyword, instead of positional, arguments. [#267](https://github.com/RGF-team/rgf/pull/267)
+
+
 ## RGF 1.0.5
 
 The RGF R package was integrated in the home repository of the Regularized Greedy Forest (RGF) library (https://github.com/RGF-team).

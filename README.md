@@ -1,16 +1,19 @@
+
+[![tic](https://github.com/mlampros/RGF/workflows/tic/badge.svg?branch=master)](https://github.com/mlampros/RGF/actions)
 [![CRAN Version](https://r-pkg.org/badges/version/RGF)](https://cran.r-project.org/package=RGF)
 [![codecov.io](https://codecov.io/github/RGF-team/rgf/coverage.svg?branch=master)](https://codecov.io/github/RGF-team/rgf?branch=master)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/RGF?color=blue)](https://cran.r-project.org/package=RGF)
+<a href="https://www.buymeacoffee.com/VY0x8snyh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="21px" ></a>
 
 
 ## RGF (Regularized Greedy Forest)
 <br>
 
-**UPDATE 17-08-2018**: Now RGF is part of the [official RGF repository](https://github.com/RGF-team/rgf/tree/master/R-package) and active development is performed there. This repository is archived.
+**UPDATE 17-08-2018**: Now RGF is part of the [official RGF repository](https://github.com/RGF-team/rgf/tree/master/R-package) and active development is performed there. **The *mlampros/RGF* repository is archived.**
 
 <br>
 
-The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/RGF-team/rgf_python) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/RGF-team/rgf/tree/master/FastRGF). More details on the functionality of the RGF package can be found in the [blog-post](http://mlampros.github.io/2018/02/14/the_RGF_package/) and in the package Documentation. 
+The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https://github.com/RGF-team/rgf) *python* package, which also includes a [Multi-core implementation (FastRGF)](https://github.com/RGF-team/rgf/tree/master/FastRGF). More details on the functionality of the RGF package can be found in the [blog-post](http://mlampros.github.io/2018/02/14/the_RGF_package/) and in the package Documentation. 
 
 <br>
 
@@ -35,7 +38,7 @@ The **RGF** package is a wrapper of the [Regularized Greedy Forest (RGF)](https:
 
 <br>
 
-* Python (2.7 or >= 3.4)
+* Python (>= 3.6)
 
 
 <br>
@@ -44,7 +47,7 @@ All modules should be installed in the default python configuration (the configu
 
 <br>
 
-#### **Debian/Ubuntu/Fedora**    [ installed / tested on Python 2.7 ]
+#### **Debian/Ubuntu/Fedora**
 
 <br>
 
@@ -87,7 +90,7 @@ sudo python setup.py install
 
 
 
-#### **Mac OS X**            [ installed / tested on Python >= 3.4 ]
+#### **Mac OS X**
 
 <br>
 
@@ -247,7 +250,7 @@ UserWarning: Cannot find FastRGF executable files. FastRGF estimators will be un
 
 <br><br>
 
-#### **Windows OS**            [ installed / tested on Python >= 3.4 ]
+#### **Windows OS**
 
 <br>
 
@@ -339,7 +342,7 @@ gcc --version
 
 <br>
 
-Normally MinGW is installed in the **C:\\** directory. So, first delete the folder **C:\\MinGW** (if it already exists), and then remove the environment variable from (Control Panel >> System and Security >> System >> Advanced system settings >> Environment variables >> System variables >> Path >> Edit) which usually is **C:\\MinGW\\bin**. Then download the most recent version of [MinGW](http://www.mingw.org/wiki/Getting_Started), and especially the **mingw-get-setup.exe** which is an *automated GUI installer assistant*. After the new version is installed successfully, update the environment variable by adding **C:\\MinGW\\bin** in (Control Panel >> System and Security >> System >> Advanced system settings >> Environment variables >> System variables >> Path >> Edit). Then open a new command prompt (console) and type, 
+Normally MinGW is installed in the **C:\\** directory. So, first delete the folder **C:\\MinGW** (if it already exists), and then remove the environment variable from (Control Panel >> System and Security >> System >> Advanced system settings >> Environment variables >> System variables >> Path >> Edit) which usually is **C:\\MinGW\\bin**. Then download the most recent version of [MinGW](http://mingw-w64.org/doku.php), and especially the **mingw-get-setup.exe** which is an *automated GUI installer assistant*. After the new version is installed successfully, update the environment variable by adding **C:\\MinGW\\bin** in (Control Panel >> System and Security >> System >> Advanced system settings >> Environment variables >> System variables >> Path >> Edit). Then open a new command prompt (console) and type, 
 
 <br>
 

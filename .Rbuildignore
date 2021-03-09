@@ -1,1 +1,4 @@
 ^\.travis\.yml$
+^\.ccache$
+^\.github$
+^tic\.R$
